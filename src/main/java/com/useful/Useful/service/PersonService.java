@@ -4,13 +4,17 @@ import com.useful.Useful.DTO.PersonDTO;
 import com.useful.Useful.entity.Person;
 import com.useful.Useful.repository.PersonRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class PersonService {
     private final PersonRepo repo;
-
+    private final PasswordEncoder passwordEncoder;
+    public boolean isPersonExistsByUsername(String username){
+        return repo.existsPersonByUsername(username);
+    }
     public boolean savePerson(PersonDTO personDTO){
         try{
             if(repo.existsPersonByUsername(personDTO.getUsername())){
@@ -19,7 +23,7 @@ public class PersonService {
 
             Person person = new Person();
             person.setUsername(personDTO.getUsername());
-            person.setPassword(personDTO.getPassword());
+            person.setPassword(passwordEncoder.encode(personDTO.getPassword()));
             person.setRoles(personDTO.getRoles());
             repo.save(person);
             return true;
@@ -27,6 +31,14 @@ public class PersonService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean isPasswordTrue(Person person, String rawPassword){
+        return passwordEncoder.matches(rawPassword, person.getPassword());
+    }
+    public Person findPersonByUsername(String username){
+        Person person = repo.findPersonByUsername(username);
+        return repo.findPersonByUsername(username);
     }
 
 }
