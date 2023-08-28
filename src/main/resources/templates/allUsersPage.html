@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr th:each="person:${users}">
+        <td th:text="${person.username}"></td>
+        <td th:text="${person.roles}"></td>
+        <div th:if="${isAdmin}">
+            <td> Типа имейл</td>
+        </div>
+    </tr>
+</table>
+</body>
+</html>
