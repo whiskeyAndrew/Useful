@@ -1,6 +1,7 @@
 package com.useful.Useful.service;
 
 import com.useful.Useful.DTO.PersonDTO;
+import com.useful.Useful.Exceptions.PersonNotFoundException;
 import com.useful.Useful.entity.Person;
 import com.useful.Useful.repository.PersonRepo;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,10 @@ public class PersonService {
         return repo.existsPersonByUsername(username);
     }
 
+    public boolean updatePerson(Person person){
+        Person newPerson = repo.save(person);
+        return newPerson != null;
+    }
     public boolean savePerson(PersonDTO personDTO) {
         try {
             if (repo.existsPersonByUsername(personDTO.getUsername())) {
@@ -38,6 +43,14 @@ public class PersonService {
     }
     public List<Person> getAllPerson(){
         return repo.getAllByIdGreaterThan(-1L);
+    }
+
+    public Person findPersonById(Long id) throws PersonNotFoundException {
+        Person person = repo.findPersonById(id);
+        if(person==null){
+            throw new PersonNotFoundException("Person not found by id");
+        }
+        return person;
     }
     public boolean isPasswordTrue(Person person, String rawPassword) {
         return passwordEncoder.matches(rawPassword, person.getPassword());

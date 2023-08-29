@@ -1,3 +1,7 @@
+<style>
+    .hide { position:absolute; top:-1px; left:-1px; width:1px; height:1px; }
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,12 +9,24 @@
     <title>Title</title>
 </head>
 <body>
+<iframe name="hiddenFrame" class="hide"></iframe>
 <table>
     <tr th:each="person:${users}">
         <td th:text="${person.username}"></td>
         <td th:text="${person.roles}"></td>
         <div th:if="${isAdmin}">
             <td> Типа имейл</td>
+            <td>
+<!--                target вовзращает на скрытый фрейм, это позволяет не делать переход на другую страницу-->
+                <form th:action="@{/allUsersPage/user/{id}(id=${person.id})}" th:method="post" target="_self">
+                    <label>
+                        <select name="selectedRole">
+                            <option th:each="role:${roles}" th:text="${role}" th:value="${role}"></option>
+                        </select>
+                    </label>
+                    <input type="submit" value="Update"/>
+                </form>
+            </td>
         </div>
     </tr>
 </table>

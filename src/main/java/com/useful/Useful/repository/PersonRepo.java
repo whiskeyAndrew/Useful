@@ -10,4 +10,5 @@ public interface PersonRepo extends JpaRepository<Person, Long> {
 
     Person findPersonByUsername(String username);
     List<Person> getAllByIdGreaterThan(Long greaterThan);
+    Person findPersonById(Long id);
 }
