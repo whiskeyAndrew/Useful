@@ -1,1 +1,2 @@
--Spring Security Integration
+Серверное приложение для осваивания библиотек Java
+- Spring Security
