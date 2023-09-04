@@ -1,9 +1,6 @@
 package com.useful.Useful.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +15,7 @@ public class Person {
     private Long id;
     private String username;
     private String password;
-    private List<Roles> roles;
+    @ManyToOne
+    @JoinColumn(name = "roles")
+    private Role role;
 }

@@ -1,9 +1,8 @@
 package com.useful.Useful.config;
 
-import com.useful.Useful.entity.Roles;
 import com.useful.Useful.repository.PersonRepo;
+import com.useful.Useful.service.RoleService;
 import com.useful.Useful.service.springShitcurity.CustomUserDetailsService;
-import com.useful.Useful.service.RolesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,13 +20,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final PersonRepo personRepo;
     private final CustomUserDetailsService customUserDetailsService;
-    private final RolesService rolesService;
+    private final RoleService roleService;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests(requests -> requests
                         .requestMatchers("/", "/home").permitAll()
                         .requestMatchers("/login","/registration").anonymous()
-                        .requestMatchers("/admin/**").hasRole(rolesService.getRawRole(Roles.ROLE_ADMIN))
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

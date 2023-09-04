@@ -1,6 +1,7 @@
 package com.useful.Useful.service.springShitcurity;
 
 import com.useful.Useful.entity.Person;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,4 +20,5 @@ public class SecurityUpdateService {
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
+
 }

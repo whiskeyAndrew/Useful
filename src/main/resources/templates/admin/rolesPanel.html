@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form th:action="@{/admin/rolesPanel}" method="post">
+    <div><label> Role Name : <input type="text" name="roleName"/> </label></div>
+    <div><input type="submit" value="Create"/></div>
+</form>
+
+<div>
+    Available roles:
+    <table>
+        <tr th:each="role:${availableRoles}">
+            <td th:text="${role.getName()}"></td>
+            <td>
+                <div th:if="${role.getName()!='ROLE_USER' and role.getName()!='ROLE_ADMIN'}">
+                    <form th:action="@{/admin/rolesPanel/delete/{id}(id=${role.id})}" method="post" target="_self">
+                        <input type="submit" value="Delete">
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

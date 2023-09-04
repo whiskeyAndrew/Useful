@@ -1,9 +1,8 @@
 package com.useful.Useful.service.springShitcurity;
 
 import com.useful.Useful.entity.Person;
-import com.useful.Useful.entity.Roles;
 import com.useful.Useful.repository.PersonRepo;
-import com.useful.Useful.service.RolesService;
+import com.useful.Useful.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,7 +20,7 @@ import java.util.Set;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final PersonRepo personRepo;
-    private final RolesService rolesService;
+    private final RoleService rolesService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -30,10 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not exists by Username");
         }
         Set<GrantedAuthority> authoritySet = new HashSet<>();
-        for (Roles role : person.getRoles()) {
-            authoritySet.add(new SimpleGrantedAuthority(
-                    role.toString()));
-        }
+        authoritySet.add(new SimpleGrantedAuthority(person.getRole().getName()));
         return new User(person.getUsername(), person.getPassword(), authoritySet);
     }
 

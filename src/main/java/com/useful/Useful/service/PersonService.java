@@ -3,6 +3,7 @@ package com.useful.Useful.service;
 import com.useful.Useful.DTO.PersonDTO;
 import com.useful.Useful.Exceptions.PersonNotFoundException;
 import com.useful.Useful.entity.Person;
+import com.useful.Useful.entity.Role;
 import com.useful.Useful.repository.PersonRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,7 +34,7 @@ public class PersonService {
             Person person = new Person();
             person.setUsername(personDTO.getUsername());
             person.setPassword(passwordEncoder.encode(personDTO.getPassword()));
-            person.setRoles(personDTO.getRoles());
+            person.setRole(personDTO.getRole());
             repo.save(person);
             return true;
         } catch (Exception e) {
@@ -59,6 +60,10 @@ public class PersonService {
     public Person findPersonByUsername(String username) {
         Person person = repo.findPersonByUsername(username);
         return repo.findPersonByUsername(username);
+    }
+
+    public List<Person> findAllByRole(Role role){
+        return repo.getAllByRole(role);
     }
 
 }
