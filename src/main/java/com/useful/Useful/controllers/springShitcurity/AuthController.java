@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
     private final PersonService personService;
     private final RoleService roleService;
+
     @PostMapping("/registration")
     private String regUser(@RequestParam(name = "username") String username,
                            @RequestParam(name = "password") String password,
@@ -35,7 +34,7 @@ public class AuthController {
             } else {
                 role = roleService.getRoleByName("ROLE_USER");
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "redirect:login";
         }

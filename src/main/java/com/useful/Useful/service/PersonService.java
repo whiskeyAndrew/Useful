@@ -21,10 +21,11 @@ public class PersonService {
         return repo.existsPersonByUsername(username);
     }
 
-    public boolean updatePerson(Person person){
+    public boolean updatePerson(Person person) {
         Person newPerson = repo.save(person);
         return newPerson != null;
     }
+
     public boolean savePerson(PersonDTO personDTO) {
         try {
             if (repo.existsPersonByUsername(personDTO.getUsername())) {
@@ -42,17 +43,19 @@ public class PersonService {
             return false;
         }
     }
-    public List<Person> getAllPerson(){
+
+    public List<Person> getAllPerson() {
         return repo.getAllByIdGreaterThan(-1L);
     }
 
     public Person findPersonById(Long id) throws PersonNotFoundException {
         Person person = repo.findPersonById(id);
-        if(person==null){
+        if (person == null) {
             throw new PersonNotFoundException("Person not found by id");
         }
         return person;
     }
+
     public boolean isPasswordTrue(Person person, String rawPassword) {
         return passwordEncoder.matches(rawPassword, person.getPassword());
     }
@@ -62,7 +65,7 @@ public class PersonService {
         return repo.findPersonByUsername(username);
     }
 
-    public List<Person> findAllByRole(Role role){
+    public List<Person> findAllByRole(Role role) {
         return repo.getAllByRole(role);
     }
 

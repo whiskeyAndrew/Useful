@@ -10,7 +10,9 @@ import java.util.List;
 public interface RoleRepo extends JpaRepository<Role, Long> {
 
     Role getRoleById(Long id);
+
     Role getRoleByName(String name);
+
     List<Role> getAllByIdGreaterThan(Long id);
 
     void deleteById(Long id);

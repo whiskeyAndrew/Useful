@@ -19,37 +19,40 @@ public class RolesPanelController {
     private final RoleService roleService;
     private final PersonService personService;
     private final SecurityUpdateService securityUpdateService;
+
     @GetMapping()
-    public String getRolesPanel(Model model){
-        model.addAttribute("availableRoles",roleService.getAllExistsRoles());
+    public String getRolesPanel(Model model) {
+        model.addAttribute("availableRoles", roleService.getAllExistsRoles());
         return "/admin/rolesPanel";
     }
+
     @PostMapping()
-    public String updateRoles(@RequestParam(name = "roleName") String newRoleName){
-        if(!newRoleName.startsWith("ROLE_")){
+    public String updateRoles(@RequestParam(name = "roleName") String newRoleName) {
+        if (!newRoleName.startsWith("ROLE_")) {
             //грязь
             newRoleName = "ROLE_" + newRoleName;
         }
         try {
             roleService.createNewRole(newRoleName);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "redirect:/admin/rolesPanel";
     }
+
     @PostMapping("/delete/{id}")
-    public String deleteRole(@PathVariable(name="id") Long roleId){
+    public String deleteRole(@PathVariable(name = "id") Long roleId) {
         Role deletableRole;
         Role newRole;
         try {
             deletableRole = roleService.getRoleById(roleId);
             newRole = roleService.getRoleById(1L);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
         List<Person> personWithDeletableRoleList = personService.findAllByRole(deletableRole);
-        for(Person person: personWithDeletableRoleList){
+        for (Person person : personWithDeletableRoleList) {
             person.setRole(newRole);
             personService.updatePerson(person);
             securityUpdateService.forceUpdateUser(person);
