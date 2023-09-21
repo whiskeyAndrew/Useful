@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,8 +16,9 @@ import java.util.List;
 @Getter
 public class RoleService {
     private final RoleRepo repo;
+
     public void createNewRole(String name) throws RoleExistsException {
-        if(repo.getRoleByName(name)!=null){
+        if (repo.getRoleByName(name) != null) {
             throw new RoleExistsException("Role already existst");
         }
         Role newRole = new Role();
@@ -26,9 +26,9 @@ public class RoleService {
         repo.save(newRole);
     }
 
-    public Role getRoleById(Long id) throws RoleNotFoundException{
+    public Role getRoleById(Long id) throws RoleNotFoundException {
         Role role = repo.getRoleById(id);
-        if(role==null){
+        if (role == null) {
             throw new RoleNotFoundException("No roles by this name");
         }
         return role;
@@ -36,27 +36,31 @@ public class RoleService {
 
     public Role getRoleByName(String name) throws RoleNotFoundException {
         Role role = repo.getRoleByName(name);
-        if(role==null){
+        if (role == null) {
             throw new RoleNotFoundException("No roles by this name");
         }
         return role;
     }
 
-    public void deleteRole(Role role){
+    public void deleteRole(Role role) {
         repo.deleteById(role.getId());
     }
-    public List<Role> getAllExistsRoles(){
+
+    public List<Role> getAllExistsRoles() {
         return repo.getAllByIdGreaterThan(-1L);
     }
-    @PostConstruct
-    public void initSimpleRoles(){
-        try{
-            if (getRoleByName("ROLE_USER") == null) {
-                createNewRole("ROLE_USER");
-                createNewRole("ROLE_ADMIN");
-            }
 
-        } catch (Exception e){
+    @PostConstruct
+    public void initSimpleRoles() throws RoleExistsException {
+        //Я не знаю, можно ли так делать
+        //Пробуем найти роль, если не находим, создаем новые
+        //Находим - скипаем
+        try {
+            getRoleByName("ROLE_USER");
+        } catch (RoleNotFoundException e) {
+            createNewRole("ROLE_USER");
+            createNewRole("ROLE_ADMIN");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/users/edit/{id}(id=${person.id})}" method="post">
+    Username <input type="text" name="name" th:value="${person.getUsername()}"> <br>
+    <label>
+        <select name="selectedRole">
+            <option th:each="role:${roles}" th:text="${role.getName()}"
+                    th:value="${role.getName()}"></option>
+        </select>
+    </label>
+    <input type="submit" value="Изменить">
+</form>
+</body>
+</html>
